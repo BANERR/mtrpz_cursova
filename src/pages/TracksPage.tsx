@@ -4,6 +4,7 @@ import {
   Genre,
 } from '../api/client';
 import { useDebounce } from '../hooks/useDebounce';
+import { TrackList } from '../components/TrackList';
 
 export const TracksPage = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -18,6 +19,9 @@ export const TracksPage = () => {
   const [selectedArtist, setSelectedArtist] = useState('');
   
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [editingTrack, setEditingTrack] = useState<Track | null>(null);
+  const [deletingTrackId, setDeletingTrackId] = useState<string | null>(null);
+  
   
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
@@ -97,6 +101,14 @@ export const TracksPage = () => {
       </div>
            
       {error && <div className="error">{error}</div>}
+
+      <TrackList 
+        tracks={tracks}
+        onEdit={setEditingTrack}
+        onDelete={setDeletingTrackId}
+        onRefresh={handleRefreshTracks}
+      />
+
       <div data-testid="pagination">
         <button
           onClick={() => setPage(p => Math.max(1, p - 1))}
