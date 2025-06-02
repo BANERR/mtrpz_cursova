@@ -7,6 +7,7 @@ import { useDebounce } from '../hooks/useDebounce';
 import { TrackList } from '../components/TrackList';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 import { TrackForm } from '../components/TrackForm';
+import { LoadingIndicator } from '../components/LoadingIndicator';
 
 export const TracksPage = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -14,6 +15,7 @@ export const TracksPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [limit] = useState(10);
   
   const [searchTerm, setSearchTerm] = useState('');
@@ -103,6 +105,7 @@ export const TracksPage = () => {
       </div>
            
       {error && <div className="error">{error}</div>}
+      {loading && <LoadingIndicator data-testid="loading-tracks" />}
 
       {deletingTrackId && (
         <ConfirmDialog
