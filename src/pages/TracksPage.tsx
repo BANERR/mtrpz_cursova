@@ -5,6 +5,7 @@ import {
 } from '../api/client';
 import { useDebounce } from '../hooks/useDebounce';
 import { TrackList } from '../components/TrackList';
+import { ConfirmDialog } from '../components/ConfirmDialog';
 
 export const TracksPage = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -50,7 +51,7 @@ export const TracksPage = () => {
   };
 
   const handleDeleteTrack = async () => {
-    //delete track
+    console.log('deleted')
   };
 
   const handleRefreshTracks = useCallback(() => {
@@ -101,6 +102,14 @@ export const TracksPage = () => {
       </div>
            
       {error && <div className="error">{error}</div>}
+
+      {deletingTrackId && (
+        <ConfirmDialog
+          message="Are you sure you want to delete this track?"
+          onConfirm={handleDeleteTrack}
+          onCancel={() => setDeletingTrackId(null)}
+        />
+      )}
 
       <TrackList 
         tracks={tracks}
