@@ -6,6 +6,7 @@ import {
 import { useDebounce } from '../hooks/useDebounce';
 import { TrackList } from '../components/TrackList';
 import { ConfirmDialog } from '../components/ConfirmDialog';
+import { TrackForm } from '../components/TrackForm';
 
 export const TracksPage = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -135,6 +136,32 @@ export const TracksPage = () => {
           Next
         </button>
       </div>
+
+      {isCreateModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Create New Track</h2>
+            <TrackForm
+              genres={genres}
+              onSubmit={handleCreateTrack}
+              onCancel={() => setIsCreateModalOpen(false)}
+            />
+          </div>
+        </div>
+      )}
+      {editingTrack && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Edit Track</h2>
+            <TrackForm
+              track={editingTrack}
+              genres={genres}
+              onSubmit={handleUpdateTrack}
+              onCancel={() => setEditingTrack(null)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
