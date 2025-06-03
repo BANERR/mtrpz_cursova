@@ -25,6 +25,9 @@ import {
   PaginatedResponse,
   BatchDeleteResponse
 } from '../types';
+import { FastifyReply, FastifyRequest } from 'fastify';
+import path from 'path';
+import fs from 'fs';
 
 /**
  * Get all tracks with pagination, sorting, and filtering
@@ -56,6 +59,60 @@ export const getAllTracks: RouteHandler<ListTracksQuery> = async (
   }
 };
 
+export const getTrackFile = async (
+  request: FastifyRequest<{
+    Params: { id: string };
+  }>,
+  reply: FastifyReply
+) => {
+  try {
+    const { id } = request.params;
+
+    // 1. (необязательно) Валидация ID (раскомментируй, если нужно)
+    // if (!id || !/^[a-f\d]{24}$/i.test(id)) {
+    //   return reply.code(400).send({ error: 'Invalid track ID format' });
+    // }
+
+    // 2. Безопасное формирование пути
+    const uploadsDir = path.join(__dirname, '../../data/uploads');
+    const filePath = path.join(uploadsDir, `${id}`);
+
+    // 3. Проверка существования директории
+    if (!fs.existsSync(uploadsDir)) {
+      request.log.error(`Uploads directory not found: ${uploadsDir}`);
+      return reply.code(500).send({ error: 'Server configuration error' });
+    }
+
+    // 4. Проверка существования файла
+    if (!fs.existsSync(filePath)) {
+      return reply.code(404).send({ error: 'Audio file not found' });
+    }
+
+    // 5. Проверка прав доступа
+    try {
+      await fs.promises.access(filePath, fs.constants.R_OK);
+    } catch (accessError) {
+      request.log.error(`Access denied to file: ${filePath}`);
+      return reply.code(403).send({ error: 'Access denied' });
+    }
+
+    // 6. Получение информации о файле
+    const stats = await fs.promises.stat(filePath);
+    const fileSize = stats.size;
+
+    // 7. Отдача полного файла без поддержки Range-запросов
+    reply
+      .code(200)
+      .header('Content-Length', fileSize.toString())
+      .header('Accept-Ranges', 'none') // (опционально: явно запрещает Range-запросы)
+      .type('audio/mpeg')
+      .send(fs.createReadStream(filePath));
+
+  } catch (error) {
+    request.log.error(error);
+    return reply.code(500).send({ error: 'Internal server error' });
+  }
+};
 /**
  * Get a track by its slug
  */

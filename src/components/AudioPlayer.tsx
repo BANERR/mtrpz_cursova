@@ -3,13 +3,20 @@ interface AudioPlayerProps {
   trackId: string;
 }
 
-export const AudioPlayer = ({ audioUrl, trackId }: AudioPlayerProps) => {
+const audio = new URL('../../server/data/uploads/test.mp3', import.meta.url).href;
+
+export const AudioPlayer = ({ trackId, audioUrl }: AudioPlayerProps) => {
+  const audioSrc = `http://localhost:8000/api/tracks/${audioUrl}/audio`;
+  console.log(audioSrc)
+
   return (
-    <div className="audio-player" data-testid={`audio-player-${trackId}`}>
+    <div>
       <audio controls>
-        <source src={audioUrl} type="audio/mpeg" />
-        Your browser does not support the audio element.
+        <source src={audio} type="audio/mpeg" />
       </audio>
     </div>
   );
-}; 
+};
+
+
+

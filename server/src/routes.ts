@@ -4,6 +4,7 @@ import {
   deleteTrackFile, 
   getAllTracks, 
   getTrack, 
+  getTrackFile, 
   removeTrack, 
   removeTracks, 
   updateTrackById, 
@@ -297,5 +298,28 @@ export default async function routes(fastify: FastifyInstance) {
       }
     },
     handler: deleteTrackFile
+  });
+
+  fastify.get('/api/tracks/:id/audio', {
+    schema: {
+      description: 'Get audio file for a track',
+      tags: ['tracks'],
+      params: {
+        type: 'object',
+        required: ['id'],
+        properties: {
+          id: { type: 'string' }
+        }
+      },
+      response: {
+        200: {
+          type: 'string',
+          format: 'binary'
+        },
+        404: errorSchema,
+        500: errorSchema
+      }
+    },
+    handler: getTrackFile
   });
 }

@@ -71,28 +71,6 @@ export const TrackItem = ({ track, onEdit, onDelete, onUploadSuccess }: TrackIte
           Delete
         </button>
         
-        {!track.audioFile && (
-          <div className="audio-upload">
-            <label>
-              <input
-                type="file"
-                accept="audio/mpeg,audio/wav,audio/mp3"
-                onChange={handleFileUpload}
-                disabled={isUploading}
-                style={{ display: 'none' }}
-                data-testid={`upload-input-${track.id}`}
-              />
-              <button 
-                type="button" 
-                disabled={isUploading}
-                data-testid={`upload-track-${track.id}`}
-              >
-                {isUploading ? 'Uploading...' : 'Upload Audio'}
-              </button>
-            </label>
-            {uploadError && <div className="upload-error">{uploadError}</div>}
-          </div>
-        )}
       </div>
     </div>
   );
