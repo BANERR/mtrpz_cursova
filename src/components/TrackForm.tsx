@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { Track, Genre } from '../api/types';
+import { GenreSelector } from './GenreSelector';
 
 interface TrackFormProps {
   track?: Track;
   genres: Genre[];
   onSubmit: (track: Omit<Track, 'id' | 'slug' | 'createdAt' | 'updatedAt'>) => Promise<void>;
   onCancel: () => void;
+  isLoading: boolean;
 }
 
-export const TrackForm = ({ track, genres, onSubmit, onCancel }: TrackFormProps) => {
+export const TrackForm = ({ track, genres, onSubmit, onCancel, isLoading }: TrackFormProps) => {
   const [title, setTitle] = useState(track?.title || '');
   const [artist, setArtist] = useState(track?.artist || '');
   const [album, setAlbum] = useState(track?.album || '');
@@ -90,6 +92,35 @@ export const TrackForm = ({ track, genres, onSubmit, onCancel }: TrackFormProps)
           onChange={(e) => setCoverImage(e.target.value)}
           data-testid="input-cover-image"
         />
+      </div>
+      
+      <div className="form-group">
+        <label>Genres*</label>
+        <GenreSelector
+          genres={genres}
+          selectedGenres={selectedGenres}
+          onSelect={toggleGenre}
+        />
+        {errors.genres && <span className="error-message" data-testid="error-genre">{errors.genres}</span>}
+      </div>
+      
+      <div className="form-actions">
+        <button 
+          type="submit" 
+          disabled={isLoading} 
+          data-testid="submit-button"
+          className="submit-button"
+        >
+          {isLoading ? 'Saving...' : 'Save'}
+        </button>
+        <button 
+          type="button" 
+          onClick={onCancel} 
+          disabled={isLoading}
+          className="cancel-button"
+        >
+          Cancel
+        </button>
       </div>
     </form>
   );
