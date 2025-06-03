@@ -5,13 +5,18 @@ import fastifyStatic from '@fastify/static';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import path from 'path';
+import routes from './routes';
+import { initializeDb } from './utils/db';
 import config from './config';
 
 async function start() {
   try {
     // Log configuration on startup
     console.log(`Starting server in ${config.server.env} mode`);
-        
+    
+    // Initialize database
+    await initializeDb();
+    
     const fastify = Fastify({
       logger: {
         level: config.logger.level,
@@ -65,13 +70,15 @@ async function start() {
       }
     });
     
+    // Register routes
+    await fastify.register(routes);
+    
     // Start server
     await fastify.listen({ 
       port: config.server.port, 
       host: config.server.host 
     });
     
-   
   } catch (error) {
     console.error('Error starting server:', error);
     process.exit(1);
