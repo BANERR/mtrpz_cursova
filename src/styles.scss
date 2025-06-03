@@ -61,7 +61,6 @@ input, select {
   border: 1px solid $border-color;
   border-radius: 4px;
   font-size: 14px;
-  margin-bottom: 12px;
   width: 100%;
   max-width: 400px;
 
@@ -214,7 +213,6 @@ label {
   display: flex;
   gap: 12px;
   margin-bottom: 20px;
-  flex-wrap: wrap;
   align-items: center;
 
   > * {
@@ -285,7 +283,9 @@ label {
 }
 
 // Genre selector
-[data-testid="genre-selector"] {
+
+.genre-selector {
+  margin: 15px 0;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -303,10 +303,6 @@ label {
       color: white;
     }
   }
-}
-
-.genre-selector {
-  margin: 15px 0;
   
   .genre-list {
     display: flex;

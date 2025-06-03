@@ -22,7 +22,7 @@ export const TracksPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const [limit] = useState(10);
+  const [limit] = useState(9);
   
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('');
@@ -48,6 +48,7 @@ export const TracksPage = () => {
       
       const response = await fetchTracks(params);
       setTracks(response.data);
+      console.log(response.data)
       setTotal(response.total);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load tracks');
@@ -59,6 +60,7 @@ export const TracksPage = () => {
   const loadGenres = async () => {
     try {
       const genres = await fetchGenres();
+      console.log(genres)
       setGenres(genres);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load genres');
@@ -138,7 +140,7 @@ export const TracksPage = () => {
         >
           <option value="">All Genres</option>
           {genres.map(genre => (
-            <option key={genre.id} value={genre.id}>{genre.name}</option>
+            <option key={`genre-${genre}`}>{`${genre}`}</option>
           ))}
         </select>
         
@@ -180,7 +182,7 @@ export const TracksPage = () => {
         >
           Previous
         </button>
-        <span>Page {page} of {Math.ceil(total / limit)}</span>
+        <span>Page {page}</span>
         <button
           onClick={() => setPage(p => p + 1)}
           disabled={page >= Math.ceil(total / limit)}

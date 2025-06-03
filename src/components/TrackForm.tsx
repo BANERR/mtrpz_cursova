@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Track, Genre } from '../api/types';
-import { GenreSelector } from './GenreSelector';
 
 interface TrackFormProps {
   track?: Track;
@@ -10,7 +9,7 @@ interface TrackFormProps {
   isLoading: boolean;
 }
 
-export const TrackForm = ({ track, genres, onSubmit, onCancel, isLoading }: TrackFormProps) => {
+export const TrackForm = ({ track, onSubmit, onCancel, isLoading }: TrackFormProps) => {
   const [title, setTitle] = useState(track?.title || '');
   const [artist, setArtist] = useState(track?.artist || '');
   const [album, setAlbum] = useState(track?.album || '');
@@ -92,16 +91,6 @@ export const TrackForm = ({ track, genres, onSubmit, onCancel, isLoading }: Trac
           onChange={(e) => setCoverImage(e.target.value)}
           data-testid="input-cover-image"
         />
-      </div>
-      
-      <div className="form-group">
-        <label>Genres*</label>
-        <GenreSelector
-          genres={genres}
-          selectedGenres={selectedGenres}
-          onSelect={toggleGenre}
-        />
-        {errors.genres && <span className="error-message" data-testid="error-genre">{errors.genres}</span>}
       </div>
       
       <div className="form-actions">
