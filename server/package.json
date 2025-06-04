@@ -9,13 +9,7 @@
     "build": "tsc",
     "lint": "eslint src --ext .ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run src/__tests__/health.test.ts",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "test:ci": "vitest run --reporter=verbose",
-    "bd:reset": "rm -rf ./data && cp -r ./data-initial ./data",
-    "seed": "ts-node src/seed.ts",
-    "seed:prod": "node dist/seed.js"
+    "test": "vitest run src/__tests__/health.test.ts src/__tests__/genres.test.ts src/__tests__/tracks.test.ts src/__tests__/db.test.ts"
   },
   "keywords": [],
   "author": "",
