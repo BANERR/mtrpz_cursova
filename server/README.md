@@ -1,25 +1,18 @@
-# Music app backend
+## Для того щоб запустити програму потрібно відкрити термінал та прописати дані команди, за наявності вже встановленої NodeJs:
 
-## Installation
+1. git clone https://github.com/BANERR/mtrpz_cursova.git
+2. cd mtrpz_cursova
+3. npm i - для встановлення необхідних пакетів
+4. npm start - для запуску клієнтського сервера
+5. Відкрити другий термінал паралельно з першим
+6. cd mtrpz_cursova
+7. cd server
+8. npm i - для встановлення необхідних пакетів
+9. npm run dev - для запуску сервера
 
-You should have NodeJS `v20.13.0` or higher installed.
-You can check your NodeJS version by running:
-```bash
-node -v
-```
-If you don't have proper version of NodeJS installed, you can download using from [NVM](https://github.com/nvm-sh/nvm).
+## Далі ви вже можете відкрити вебсайт на локалхості http://localhost:3000/ та користуватися програмою.
 
-## Setup
-
-1. Install dependencies:
-
-```bash
-npm install
-```
-2. Run the development server:
-```bash
-npm run dev
-```
-## API Documentation
-
-API documentation is available at http://localhost:8000/documentation
+1. Для запуску тестів потрібно:
+2. cd mtrpz_cursova
+3. cd server
+4. npm test
