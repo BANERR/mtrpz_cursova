@@ -1,0 +1,14 @@
+{
+  "title": "test",
+  "artist": "test",
+  "album": "test",
+  "genres": [
+    "Rock",
+    "Pop"
+  ],
+  "coverImage": "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg",
+  "slug": "test",
+  "id": "1749033945243",
+  "createdAt": "2025-06-04T10:45:45.243Z",
+  "updatedAt": "2025-06-04T10:51:51.051Z"
+}

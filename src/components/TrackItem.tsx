@@ -39,6 +39,8 @@ export const TrackItem = ({ track, onEdit, onDelete, onUploadSuccess }: TrackIte
     }
   };
 
+  console.log(track.coverImage)
+
   return (
     <div className="track-item" data-testid={`track-item-${track.id}`}>
       <div>
@@ -54,7 +56,7 @@ export const TrackItem = ({ track, onEdit, onDelete, onUploadSuccess }: TrackIte
       </div>
       
       {track.coverImage ? (
-        <img src={track.coverImage} alt="Cover" />
+        <img src={track.coverImage} alt="Cover"  className='image-container'/>
       ) : (
         <div className="default-cover">No Cover</div>
       )}

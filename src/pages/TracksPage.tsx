@@ -197,7 +197,6 @@ export const TracksPage = () => {
           <div className="modal-content">
             <h2>Create New Track</h2>
             <TrackForm
-              genres={genres}
               onSubmit={handleCreateTrack}
               onCancel={() => setIsCreateModalOpen(false)}
               isLoading={loading}
@@ -212,7 +211,6 @@ export const TracksPage = () => {
             <h2>Edit Track</h2>
             <TrackForm
               track={editingTrack}
-              genres={genres}
               onSubmit={handleUpdateTrack}
               onCancel={() => setEditingTrack(null)}
               isLoading={loading}

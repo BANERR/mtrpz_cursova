@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { Track, Genre } from '../api/types';
+import { useEffect, useState } from 'react';
+import { Track } from '../api/types';
+import { fetchGenres } from '../api/client';
 
 interface TrackFormProps {
   track?: Track;
-  genres: Genre[];
   onSubmit: (track: Omit<Track, 'id' | 'slug' | 'createdAt' | 'updatedAt'>) => Promise<void>;
   onCancel: () => void;
   isLoading: boolean;
@@ -16,6 +16,7 @@ export const TrackForm = ({ track, onSubmit, onCancel, isLoading }: TrackFormPro
   const [coverImage, setCoverImage] = useState(track?.coverImage || '');
   const [selectedGenres, setSelectedGenres] = useState<string[]>(track?.genres || []);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [availableGenres, setAvailableGenres] = useState<string[]>([]);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -25,6 +26,19 @@ export const TrackForm = ({ track, onSubmit, onCancel, isLoading }: TrackFormPro
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  const loadGenres = async () => {
+    try {
+      const genres = await fetchGenres();
+      setAvailableGenres(genres);
+    } catch (err) {
+      console.error('Failed to load genres:', err);
+    }
+  };
+
+  useEffect(() => {
+    loadGenres();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,11 +53,11 @@ export const TrackForm = ({ track, onSubmit, onCancel, isLoading }: TrackFormPro
     });
   };
 
-  const toggleGenre = (genreId: string) => {
+  const toggleGenre = (genreName: string) => {
     setSelectedGenres(prev =>
-      prev.includes(genreId)
-        ? prev.filter(id => id !== genreId)
-        : [...prev, genreId]
+      prev.includes(genreName)
+        ? prev.filter(name => name !== genreName)
+        : [...prev, genreName]
     );
   };
 
@@ -91,6 +105,24 @@ export const TrackForm = ({ track, onSubmit, onCancel, isLoading }: TrackFormPro
           onChange={(e) => setCoverImage(e.target.value)}
           data-testid="input-cover-image"
         />
+      </div>
+      
+      <div className="form-group">
+        <label>Genres*</label>
+        <div className="genre-buttons">
+          {availableGenres.map(genre => (
+            <button
+              key={genre}
+              type="button"
+              onClick={() => toggleGenre(genre)}
+              className={`genre-button ${selectedGenres.includes(genre) ? 'selected' : ''}`}
+              data-testid={`genre-button-${genre}`}
+            >
+              {genre}
+            </button>
+          ))}
+        </div>
+        {errors.genres && <span className="error-message" data-testid="error-genres">{errors.genres}</span>}
       </div>
       
       <div className="form-actions">
